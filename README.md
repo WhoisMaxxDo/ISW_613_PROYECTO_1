@@ -158,3 +158,70 @@ Estas credenciales son exclusivamente para pruebas locales.
 
 Los dos operadores permiten comprobar la regla individual:
 quien registra un préstamo no puede aprobarlo.
+
+### 6. Configurar la conexión privada
+
+Desde la raíz del proyecto, copiar el archivo de ejemplo:
+
+```bash
+cp config/database.example.php config/database.php
+```
+
+Editar config/database.php con los datos locales de MySQL o MariaDB:
+
+- host: dirección del servidor.
+- port: puerto del servidor.
+- name: sigel.
+- user: usuario de la base de datos.
+- password: contraseña del usuario.
+
+La cuenta debe tener acceso a la base sigel.
+Para el uso de la aplicación se recomienda una cuenta con permisos
+limitados a esta base de datos.
+
+config/database.php está excluido mediante .gitignore.
+No se deben publicar sus credenciales.
+
+### 7. Registro de errores
+
+Los errores de PHP se registran en:
+
+```text
+storage/logs/php-error.log
+```
+
+La carpeta storage/logs debe existir y permitir escritura al usuario
+que ejecuta Apache. No debe quedar expuesta desde la web.
+
+Los archivos de registro están excluidos del control de versiones.
+
+En el php.ini utilizado por Apache deben estar configuradas
+estas opciones:
+
+```ini
+display_errors = Off
+display_startup_errors = Off
+log_errors = On
+```
+
+Reiniciar Apache después de modificar php.ini.
+
+### 8. Comprobar la instalación inicial
+
+Con Apache y MySQL o MariaDB iniciados abrir:
+
+```text
+http://sigel.local/
+```
+
+En esta etapa del proyecto debe aparecer el mensaje:
+
+```text
+Entorno inicial disponible.
+```
+
+Comprobar también que no puedan abrirse los archivos privados mediante
+sigel.local ni mediante localhost.
+
+La página inicial únicamente verifica la conexión.
+La autenticación y los módulos de gestión todavía están pendientes.
