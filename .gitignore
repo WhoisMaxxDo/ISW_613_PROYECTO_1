@@ -1,0 +1,17 @@
+# Configuración privada
+/config/database.php
+
+# Imágenes subidas
+/storage/images/*
+!/storage/images/.gitkeep
+
+# Registros de errores
+/storage/logs/*
+!/storage/logs/.gitkeep
+
+# Archivos del sistema
+.DS_Store
+
+# Configuración personal del editor
+/.idea/
+/.vscode/
