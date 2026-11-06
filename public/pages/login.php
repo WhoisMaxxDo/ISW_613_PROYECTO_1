@@ -62,6 +62,20 @@
                 >
             </div>
 
+            <div class="sg-remember">
+                <input
+                    class="sg-checkbox sg-checkbox-remember"
+                    type="checkbox"
+                    id="sg-remember"
+                    name="recordarme"
+                    value="1"
+                >
+
+                <label class="sg-label-remember" for="sg-remember">
+                    Recordarme durante 14 días
+                </label>
+            </div>
+
             <button
                 class="sg-button sg-button-login"
                 type="button"

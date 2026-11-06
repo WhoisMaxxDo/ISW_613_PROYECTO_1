@@ -113,6 +113,33 @@ body {
   transition: transform 0.2s;
 }
 
+.sg-remember {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.sg-checkbox {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin: 0;
+  accent-color: #1e3a5f;
+  cursor: pointer;
+}
+
+.sg-checkbox:focus-visible {
+  outline: 3px solid #bfdbfe;
+  outline-offset: 3px;
+}
+
+.sg-label-remember {
+  font-size: 14px;
+  line-height: 18px;
+  cursor: pointer;
+}
+
 .sg-button {
   display: inline-block;
   padding: 12px 18px;
