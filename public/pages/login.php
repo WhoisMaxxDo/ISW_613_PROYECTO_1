@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../../includes/bootstrap.php';
 
-$errorLogin = $_SESSION['error_login'] ?? null;
+$errorLogin = $_SESSION['error_login'] ?? '';
 unset($_SESSION['error_login']);
 
 $tokenCsrf = obtenerTokenCsrf();
