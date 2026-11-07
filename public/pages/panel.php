@@ -13,7 +13,7 @@ try {
 
     exit('El sistema no esta disponible en este momento.');
 }
-    
+
 
 ?>
 
@@ -22,13 +22,9 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    title>Panel | SIGEL</title>
-    link rel="stylesheet" href="/assets/css/styles.css">
+    <title>Panel | SIGEL</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
-    <meta> charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
 <body class="sg-page-panel">
     <header class="sg-header">
         <h1 class="sg-header-title">SIGEL</h1>

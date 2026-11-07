@@ -147,11 +147,11 @@ Comprobar las tablas:
 
 Estas cuentas se utilizarán cuando esté implementada la autenticación:
 
-| Rol           | Correo               | Contraseña de prueba |
-| ------------- | -------------------- | -------------------- |
-| Administrador | admin@sigel.test     | PruebaSIGEL2026!     |
-| Operador      | operador1@sigel.test | PruebaSIGEL2026!     |
-| Operador      | operador2@sigel.test | PruebaSIGEL2026!     |
+| Rol           | Correo                   | Contraseña de prueba |
+| ------------- | ------------------------ | -------------------- |
+| Administrador | admin@sigel.utn.ac.cr    | PruebaSIGEL2026!     |
+| Operador      | operador@sigel.utn.ac.cr | PruebaSIGEL2026!     |
+| Operador      | operador@sigel.utn.ac.cr | PruebaSIGEL2026!     |
 
 Las contraseñas se almacenan como hashes generados con password_hash().
 Estas credenciales son exclusivamente para pruebas locales.
