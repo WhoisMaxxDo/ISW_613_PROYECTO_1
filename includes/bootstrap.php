@@ -10,3 +10,6 @@ ini_set('error_log', __DIR__ . '/../storage/logs/php-error.log');
 date_default_timezone_set('America/Costa_Rica');
 
 require_once __DIR__ . '/database.php';
+require_once __DIR__ . '/session.php';
+
+iniciarSesion();
