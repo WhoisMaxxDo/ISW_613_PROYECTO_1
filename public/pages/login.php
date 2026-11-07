@@ -1,6 +1,11 @@
 <?php
 
 require_once __DIR__ . '/../../includes/bootstrap.php';
+
+$errorLogin = $_SESSION['error_login'] ?? null;
+unset($_SESSION['error_login']);
+
+$tokenCsrf = obtenerTokenCsrf();
 ?>
 
 
@@ -21,6 +26,11 @@ require_once __DIR__ . '/../../includes/bootstrap.php';
         <p class="sg-header-description">
             Gestión de préstamos de equipos de laboratorio
         </p>
+        <?php if ($errorLogin !== ''): ?>
+            <p class="sg-login-error" role="alert">
+                <?= escapar($errorLogin) ?>
+            </p>
+        <?php endif; ?>
     </header>
 
     <main class="sg-login-main">
@@ -32,8 +42,9 @@ require_once __DIR__ . '/../../includes/bootstrap.php';
             <p class="sg-login-description">
                 Acceso para administradores y operadores del laboratorio.
             </p>
-
-            <div class="sg-field sg-field-email">
+            <form class="sg-login-form" action="/actions/login.php" method="post">
+                <input type="hidden" name="csrf_token" value="<?= escapar($tokenCsrf) ?>">
+                            <div class="sg-field sg-field-email">
                 <label
                     class="sg-label sg-label-email"
                     for="sg-email"
@@ -48,6 +59,7 @@ require_once __DIR__ . '/../../includes/bootstrap.php';
                     name="correo"
                     maxlength="150"
                     autocomplete="username"
+                    required
                 >
             </div>
 
@@ -65,6 +77,7 @@ require_once __DIR__ . '/../../includes/bootstrap.php';
                     id="sg-password"
                     name="password"
                     autocomplete="current-password"
+                    required
                 >
             </div>
 
@@ -75,6 +88,7 @@ require_once __DIR__ . '/../../includes/bootstrap.php';
                     id="sg-remember"
                     name="recordarme"
                     value="1"
+                    disabled
                 >
 
                 <label class="sg-label-remember" for="sg-remember">
@@ -84,8 +98,7 @@ require_once __DIR__ . '/../../includes/bootstrap.php';
 
             <button
                 class="sg-button sg-button-login"
-                type="button"
-                disabled
+                type="submit"
             >
                 Iniciar sesión
             </button>
@@ -95,6 +108,7 @@ require_once __DIR__ . '/../../includes/bootstrap.php';
                     Volver al inicio
                 </a>
             </p>
+            </form>
         </section>
     </main>
 </body>
