@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
     http_response_code(405);
 
-    exit('Metodo no permitido.')
+    exit('Metodo no permitido.');
 }
 
 if (!validarTokenCsrf($_POST['csrf_token'] ?? null)) {
@@ -23,7 +23,7 @@ if (!validarTokenCsrf($_POST['csrf_token'] ?? null)) {
 }
 
 $correo = $_POST['correo'] ?? '';
-$password = $_POST['password'] ? '';
+$password = $_POST['password'] ?? '';
 
 if (!is_string($correo) || !is_string($password)) {
     regresarAlLogin('Revise los datos ingresados.');
