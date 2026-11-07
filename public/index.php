@@ -27,10 +27,7 @@ try {
     <h1 class="sg-title">SIGUEL</h1>
     <p>Sistema de Gestion de Prestamo de Equipos de Laboratorio</p>
     <p>
-        <?= htmlspecialchars($mensaje,
-        ENT_QUOTES | ENT_SUBSTITUTE,
-        'UTF-8'
-        ) ?>
+        <?= escapar($mensaje) ?>
     </p>
 </body>
 </html>
