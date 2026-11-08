@@ -75,7 +75,7 @@ function crearRecordatorio(PDO $pdo, int $usuarioId): void
         ':usuario_id' => $usuarioId,
         ':selector' => $selector,
         ':validator_hash' => hash('sha256', $validador),
-        ':expira_en' => date('Y-m-d H-i-s', $expiracion),
+        ':expira_en' => date('Y-m-d H:i:s', $expiracion),
     ]);
 
     $_SESSION['remember_selector'] = $selector;
