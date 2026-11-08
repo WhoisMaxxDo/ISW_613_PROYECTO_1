@@ -243,6 +243,17 @@ try {
                                     >
                                         Editar
                                     </a>
+                                    <form 
+                                        class="sg-category-delete-form" 
+                                        action="/actions/categoria-eliminar.php"
+                                        method="post"    
+                                    >
+                                        <input type="hidden" name="csrf_token" value="<?= escapar(obtenerTokenCsrf()) ?>">
+                                        <input type="hidden" name="id" value="<?= escapar((string) $categoria['id']) ?>">
+                                        <button class="sg-button sg-button-category-delete" type="submit">
+                                            Eliminar
+                                        </button>
+                                </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

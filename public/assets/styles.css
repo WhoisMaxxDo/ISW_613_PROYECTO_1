@@ -326,3 +326,17 @@ body {
 .sg-category-actions {
   white-space: nowrap;
 }
+
+.sg-category-delete-form {
+  display: inline-block;
+  margin-left: 16px;
+}
+
+.sg-button-category-delete {
+  padding: 8px 12px;
+  background-color: #991b1b;
+}
+
+.sg-button-category-delete:hover:not(:disabled) {
+  background-color: #7f1d1d;
+}
