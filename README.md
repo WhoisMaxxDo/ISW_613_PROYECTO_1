@@ -52,6 +52,17 @@ Las categorías admiten entre 1 y 3650 días máximos de préstamo.
 Los nombres permanecen reservados aunque la categoría se elimine
 lógicamente.
 
+## Categorías
+
+El administrador puede crear, buscar, listar, editar y eliminar
+lógicamente categorías.
+
+La cantidad de registros por página se guarda en la cookie
+sigel_categorias_por_pagina.
+
+Se permiten 5, 10, 20 o 50 registros. Cuando la cookie falta
+o contiene un valor inválido, se utilizan 10.
+
 ## Regla individual
 
 Quien registra un préstamo no puede aprobarlo.

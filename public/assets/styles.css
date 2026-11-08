@@ -340,3 +340,16 @@ body {
 .sg-button-category-delete:hover:not(:disabled) {
   background-color: #7f1d1d;
 }
+
+.sg-pagination-preference-form {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.sg-field-page-size {
+  width: 180px;
+  margin-bottom: 0;
+}

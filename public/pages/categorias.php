@@ -49,7 +49,9 @@ try {
         exit('El numero de pagina no es valido.');
     }
 
-    $porPagina = 10;
+    $porPagina = obtenerCantidadPorPagina(
+        'sigel_categorias_por_pagina'
+    );
 
     $contar = $pdo->prepare(
         'SELECT COUNT(*)
@@ -194,6 +196,49 @@ try {
             <a class="sg-link sg-link-clear" href="/pages/categorias.php">
                 Limpiar
             </a>
+        </form>
+
+        <form
+            class="sg-pagination-preference-form"
+            action="/actions/categoria-preferencia.php"
+            method="post"
+        >
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="<?= escapar(obtenerTokenCsrf()) ?>"
+            >
+
+            <div class="sg-field sg-field-page-size">
+                <label
+                    class="sg-label sg-label-page-size"
+                    for="sg-category-page-size"
+                >
+                    Registros por página
+                </label>
+
+                <select
+                    class="sg-input sg-select-page-size"
+                    id="sg-category-page-size"
+                    name="por_pagina"
+                >
+                    <?php foreach ([5, 10, 20, 50] as $cantidad): ?>
+                        <option
+                            value="<?= escapar((string) $cantidad) ?>"
+                            <?= $cantidad === $porPagina ? 'selected' : '' ?>
+                        >
+                            <?= escapar((string) $cantidad) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <button
+                class="sg-button sg-button-page-size"
+                type="submit"
+            >
+                Aplicar
+            </button>
         </form>
 
         <p class="sg-results-count">

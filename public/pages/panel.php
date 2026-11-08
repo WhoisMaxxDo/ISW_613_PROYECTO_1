@@ -42,6 +42,23 @@ try {
             Rol: <?= escapar($usuario['rol']) ?>
         </p>
 
+        <?php if ($usuario['rol'] === 'administrador'): ?>
+            <nav class="sg-panel-navigation" aria-label="Administración">
+                <a
+                    class="sg-link sg-link-categories"
+                    href="/pages/categorias.php"
+                >
+                    Gestionar categorías
+                </a>
+                <a
+                    class="sg-link sg-link-users"
+                    href="/pages/usuarios.php"
+                >
+                    Gestionar usuarios
+                </a>
+            </nav>
+        <?php endif; ?>
+
         <form class="sg-logout-form" action="/actions/logout.php" method="post">
             <input type="hidden" name="csrf_token" value="<?= escapar(obtenerTokenCsrf()) ?>">
 
