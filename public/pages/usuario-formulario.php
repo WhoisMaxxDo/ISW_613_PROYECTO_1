@@ -265,7 +265,7 @@ try {
                     class="sg-button sg-button-user-save"
                     type="submit"
                 >
-                    <?= $id === 0 ? 'Crear usuario' : 'Guardar cambios' ?>Crear usuario
+                    <?= $id === 0 ? 'Crear usuario' : 'Guardar cambios' ?>
                 </button>
 
                 <a

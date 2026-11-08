@@ -218,6 +218,48 @@ try {
             </a>
         </form>
 
+        <form
+            class="sg-pagination-preference-form"
+            action="/actions/usuario-opciones.php"
+            method="post"
+        >
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="<?= escapar(obtenerTokenCsrf()) ?>"
+            >
+
+            <input type="hidden" name="accion" value="paginacion">
+
+            <div class="sg-field sg-field-page-size">
+                <label
+                    class="sg-label sg-label-page-size"
+                    for="sg-user-page-size"
+                >
+                    Registros por página
+                </label>
+
+                <select
+                    class="sg-input sg-select-page-size"
+                    id="sg-user-page-size"
+                    name="por_pagina"
+                >
+                    <?php foreach ([5, 10, 20, 50] as $cantidad): ?>
+                        <option
+                            value="<?= escapar((string) $cantidad) ?>"
+                            <?= $cantidad === $porPagina ? 'selected' : '' ?>
+                        >
+                            <?= escapar((string) $cantidad) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <button class="sg-button sg-button-page-size" type="submit">
+                Aplicar
+            </button>
+        </form>
+
         <p class="sg-results-count">
             Registros encontrados: <?= escapar((string) $totalRegistros) ?>
         </p>
@@ -265,17 +307,46 @@ try {
                                         ? 'Activo'
                                         : 'Inactivo' ?>
                                 </td>
-                                <td class="sg-user-actions">
-                                    <a
-                                        class="sg-link sg-link-user-edit"
-                                        href="<?= escapar(
-                                            '/pages/usuario-formulario.php?'
-                                            . http_build_query(['id' => $usuarioListado['id']])
-                                        ) ?>"
-                                    >
-                                        Editar
-                                    </a>
-                                </td>
+    <td class="sg-user-actions">
+        <a
+            class="sg-link sg-link-user-edit"
+            href="<?= escapar(
+                '/pages/usuario-formulario.php?'
+                . http_build_query(['id' => $usuarioListado['id']])
+            ) ?>"
+        >
+            Editar
+        </a>
+
+        <?php if ((int) $usuarioListado['id'] !== (int) $usuario['id']): ?>
+            <form
+                class="sg-user-delete-form"
+                action="/actions/usuario-opciones.php"
+                method="post"
+            >
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="<?= escapar(obtenerTokenCsrf()) ?>"
+                >
+
+                <input type="hidden" name="accion" value="eliminar">
+
+                <input
+                    type="hidden"
+                    name="id"
+                    value="<?= escapar((string) $usuarioListado['id']) ?>"
+                >
+
+                <button
+                    class="sg-button sg-button-user-delete"
+                    type="submit"
+                >
+                    Eliminar
+                </button>
+            </form>
+        <?php endif; ?>
+    </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>

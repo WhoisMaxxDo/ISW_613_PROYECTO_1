@@ -377,3 +377,21 @@ body {
 .sg-user-create {
   margin: 0 0 24px;
 }
+
+.sg-user-actions {
+  white-space: nowrap;
+}
+
+.sg-user-delete-form {
+  display: inline-block;
+  margin-left: 16px;
+}
+
+.sg-button-user-delete {
+  padding: 8px 12px;
+  background-color: #991b1b;
+}
+
+.sg-button-user-delete:hover:not(:disabled) {
+  background-color: #7f1d1d;
+}

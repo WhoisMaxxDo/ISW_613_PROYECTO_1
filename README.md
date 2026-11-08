@@ -63,6 +63,19 @@ sigel_categorias_por_pagina.
 Se permiten 5, 10, 20 o 50 registros. Cuando la cookie falta
 o contiene un valor inválido, se utilizan 10.
 
+## Usuarios
+
+Administración exclusiva del rol administrador:
+
+- Crear, buscar, listar y editar usuarios.
+- Contraseña opcional al editar.
+- Activar y desactivar cuentas.
+- Eliminar lógicamente y revocar sus tokens persistentes.
+- Paginación con preferencia validada mediante cookie.
+
+Un administrador no puede eliminarse, desactivarse ni quitarse
+su propio rol administrativo.
+
 ## Regla individual
 
 Quien registra un préstamo no puede aprobarlo.
