@@ -8,6 +8,10 @@ try {
 
     exigirRol($usuario, ['administrador']);
 
+    $mensajeCategorias = $_SESSION['mensaje_categorias'] ?? '';
+
+    unset($_SESSION['mensaje_categorias']);
+
     $busqueda = $_GET['buscar'] ?? '';
     $paginaRecibida = $_GET['pagina'] ?? '1';
 
@@ -145,6 +149,21 @@ try {
             </a>
         </div>
 
+        <p class="sg-category-create">
+            <a
+                class="sg-link sg-link-category-create"
+                href="/pages/categoria-formulario.php"
+            >
+                Crear categoría
+            </a>
+        </p>
+
+        <?php if ($mensajeCategorias !== ''): ?>
+            <p class="sg-form-success" role="status">
+                <?= escapar($mensajeCategorias) ?>
+            </p>
+        <?php endif; ?>
+
         <form
             class="sg-search-form"
             action="/pages/categorias.php"
@@ -191,6 +210,7 @@ try {
                     <tr>
                         <th scope="col">Nombre</th>
                         <th scope="col">Máximo de días de préstamo</th>
+                        <th scope="col">Acciones</th>
                     </tr>
                 </thead>
 
@@ -212,6 +232,17 @@ try {
                                     <?= escapar(
                                         (string) $categoria['dias_max_prestamo']
                                     ) ?>
+                                </td>
+                                <td class="sg-category-actions">
+                                    <a
+                                        class="sg-link sg-link-category-edit"
+                                        href="<?= escapar(
+                                            '/pages/categoria-formulario.php?'
+                                            . http_build_query(['id' => $categoria['id']])
+                                        ) ?>"
+                                    >
+                                        Editar
+                                    </a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
