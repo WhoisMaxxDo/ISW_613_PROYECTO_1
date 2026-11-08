@@ -28,6 +28,16 @@ el esquema relacional y los datos de prueba.
 
 La autenticación, los CRUD y la gestión de préstamos están pendientes.
 
+- Sesión persistente mediante selector y validador.
+- Validación y rotación del token al recuperar una sesión.
+- Revocación del token al cerrar sesión.
+
+La cookie de Recordarme vence 14 días después de su creación.
+La rotación no extiende ese plazo.
+
+Una sesión autenticada que alcanza 30 minutos de inactividad
+se cierra y revoca su recordatorio cuando se detecta el vencimiento.
+
 ## Regla individual
 
 Quien registra un préstamo no puede aprobarlo.

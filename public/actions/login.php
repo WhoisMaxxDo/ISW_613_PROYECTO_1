@@ -25,6 +25,15 @@ if (!validarTokenCsrf($_POST['csrf_token'] ?? null)) {
 $correo = $_POST['correo'] ?? '';
 $password = $_POST['password'] ?? '';
 
+$recordarme = $_POST['recordarme'] ?? '0';
+
+if (
+    !is_string($recordarme)
+    || !in_array($recordarme, ['0', '1'], true)
+) {
+    regresarAlLogin('Revise los datos ingresados.');
+}
+
 if (!is_string($correo) || !is_string($password)) {
     regresarAlLogin('Revise los datos ingresados.');
 }
@@ -123,11 +132,17 @@ try {
 
     $pdo->commit();
 
+    revocarRecordatorio($pdo);
+
     if (!session_regenerate_id(true)) {
         throw new RuntimeException('No se pudo renovar la sesion.');
     }
 
     $_SESSION = [];
+
+    if ($recordarme === '1') {
+        crearRecordatorio($pdo, (int) $usuario['id']);
+    }
 
     $_SESSION['usuario_id'] = (int) $usuario['id'];
     $_SESSION['ultima_actividad'] = time();

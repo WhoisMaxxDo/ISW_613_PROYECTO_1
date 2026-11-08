@@ -121,3 +121,122 @@ function revocarRecordatorio(PDO $pdo): void
 
     eliminarCookieRecordar();
 }
+
+
+function recuperarSesionRecordada(PDO $pdo): bool
+{
+    $cookie = leerCookieRecordar();
+
+    if ($cookie === null) {
+        if (isset($_COOKIE['sigel_remember'])) {
+            eliminarCookieRecordar();
+        }
+
+        return false;
+    }
+
+    try {
+        $pdo->beginTransaction();
+
+        $consulta = $pdo->prepare(
+            'SELECT
+                auth_tokens.id,
+                auth_tokens.usuario_id,
+                auth_tokens.validator_hash,
+                auth_tokens.expira_en,
+                usuarios.activo,
+                usuarios.eliminado_en
+             FROM auth_tokens
+             INNER JOIN usuarios
+                ON auth_tokens.usuario_id = usuarios.id
+             WHERE auth_tokens.selector = :selector
+             FOR UPDATE'
+        );
+
+        $consulta->execute([
+            ':selector' => $cookie['selector'],
+        ]);
+
+        $token = $consulta->fetch();
+
+        if ($token === false) {
+            $pdo->rollBack();
+
+            eliminarCookieRecordar();
+
+            return false;
+        }
+
+        $hashRecibido = hash('sha256', $cookie['validador']);
+
+        $esValido = hash_equals(
+            $token['validator_hash'],
+            $hashRecibido
+        );
+
+        $estaVigente = strtotime($token['expira_en']) > time();
+
+        $usuarioHabilitado = (int) $token['activo'] === 1
+            && $token['eliminado_en'] === null;
+
+        if (!$esValido || !$estaVigente || !$usuarioHabilitado) {
+            $eliminar = $pdo->prepare(
+                'DELETE FROM auth_tokens WHERE id = :id'
+            );
+
+            $eliminar->execute([
+                ':id' => $token['id'],
+            ]);
+
+            $pdo->commit();
+
+            eliminarCookieRecordar();
+
+            return false;
+        }
+
+        $nuevoSelector = bin2hex(random_bytes(9));
+        $nuevoValidador = bin2hex(random_bytes(32));
+
+        $actualizar = $pdo->prepare(
+            'UPDATE auth_tokens
+             SET selector = :selector,
+                 validator_hash = :validator_hash
+             WHERE id = :id'
+        );
+
+        $actualizar->execute([
+            ':selector' => $nuevoSelector,
+            ':validator_hash' => hash('sha256', $nuevoValidador),
+            ':id' => $token['id'],
+        ]);
+
+        $pdo->commit();
+
+        if (!session_regenerate_id(true)) {
+            eliminarCookieRecordar();
+
+            throw new RuntimeException('No se pudo renovar la sesion.');
+        }
+
+        $_SESSION = [];
+
+        $_SESSION['usuario_id'] = (int) $token['usuario_id'];
+        $_SESSION['ultima_actividad'] = time();
+        $_SESSION['remember_selector'] = $nuevoSelector;
+
+        setcookie(
+            'sigel_remember',
+            $nuevoSelector . ':' . $nuevoValidador,
+            opcionesCookieRecordar(strtotime($token['expira_en']))
+        );
+
+        return true;
+    } catch (Throwable $error) {
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+
+        throw $error;
+    }
+}

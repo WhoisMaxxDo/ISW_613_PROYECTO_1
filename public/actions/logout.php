@@ -16,7 +16,24 @@ if (!validarTokenCsrf($_POST['csrf_token'] ?? null)) {
     exit('La solicitud no es valida.');
 }
 
-cerrarSesion();
+try {
+    if (
+        isset($_SESSION['remember_selector'])
+        || isset($_COOKIE['sigel_remember'])
+    ) {
+        $pdo = conectarBaseDatos();
 
-header ('Location: /pages/login.php', true, 303);
-exit;
+        revocarRecordatorio($pdo);
+    }
+
+    cerrarSesion();
+
+    header('Location: /pages/login.php', true, 303);
+    exit;
+} catch (Throwable $error) {
+    error_log((string) $error);
+
+    http_response_code(503);
+
+    exit('No se pudo completar el cierre de sesion. Intente nuevamente.');
+}

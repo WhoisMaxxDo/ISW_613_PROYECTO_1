@@ -3,15 +3,18 @@
 function exigirAutenticacion(PDO $pdo): array
 {
     header('Cache-Control: no-store');
-    
+
     if (!isset($_SESSION['usuario_id'])) {
-        header('Location: /pages/login.php');
-        exit;
+        if(!recuperarSesionRecordada($pdo)) {
+            header('Location: /pages/login.php');
+            exit;
+        }
     }
 
     $ultimaActividad = $_SESSION['ultima_actividad'] ?? 0;
 
     if (time() - $ultimaActividad >= 1800) {
+        revocarRecordatorio($pdo);
         cerrarSesion();
 
         header('Location: /pages/login.php');
@@ -34,6 +37,7 @@ function exigirAutenticacion(PDO $pdo): array
     $usuario = $consulta->fetch();
 
     if (!$usuario) {
+        revocarRecordatorio($pdo);
         cerrarSesion();
 
         header('Location: /pages/login.php');

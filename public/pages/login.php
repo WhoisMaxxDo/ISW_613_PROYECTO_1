@@ -2,6 +2,30 @@
 
 require_once __DIR__ . '/../../includes/bootstrap.php';
 
+header('Cache-Control: no-store');
+
+try {
+    if (
+        !isset($_SESSION['usuario_id'])
+        && isset($_COOKIE['sigel_remember'])
+    ) {
+        $pdo = conectarBaseDatos();
+
+        recuperarSesionRecordada($pdo);
+    }
+
+    if (isset($_SESSION['usuario_id'])) {
+        header('Location: /pages/panel.php');
+        exit;
+    }
+} catch (Throwable $error) {
+    error_log((string) $error);
+
+    http_response_code(503);
+
+    exit('El sistema no esta disponible en este momento.');
+}
+
 $errorLogin = $_SESSION['error_login'] ?? '';
 unset($_SESSION['error_login']);
 
@@ -88,7 +112,6 @@ $tokenCsrf = obtenerTokenCsrf();
                     id="sg-remember"
                     name="recordarme"
                     value="1"
-                    disabled
                 >
 
                 <label class="sg-label-remember" for="sg-remember">
