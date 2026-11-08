@@ -56,6 +56,11 @@ try {
                 >
                     Gestionar usuarios
                 </a>
+                <nav class="sg-panel-navigation" aria-label="Inventario">
+                    <a class="sg-link sg-link-equipment" href="/pages/equipos.php">
+                        Consultar equipos
+                    </a>
+                </nav>
             </nav>
         <?php endif; ?>
 

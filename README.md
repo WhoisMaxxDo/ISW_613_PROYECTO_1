@@ -76,6 +76,23 @@ Administración exclusiva del rol administrador:
 Un administrador no puede eliminarse, desactivarse ni quitarse
 su propio rol administrativo.
 
+## Equipos
+
+El administrador puede crear, buscar, listar, editar y eliminar
+lógicamente equipos. El operador puede consultar el inventario.
+
+La paginación admite 5, 10, 20 o 50 registros y utiliza una cookie
+validada. El valor predeterminado es 10.
+
+El campo version detecta modificaciones realizadas desde formularios
+desactualizados. Los códigos son únicos y admiten letras ASCII,
+números, guiones y guiones bajos.
+
+No se permite eliminar equipos asociados a préstamos activos.
+
+La carga de imágenes y los equipos consultados recientemente
+todavía están pendientes.
+
 ## Regla individual
 
 Quien registra un préstamo no puede aprobarlo.
