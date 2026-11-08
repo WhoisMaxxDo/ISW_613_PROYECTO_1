@@ -58,7 +58,7 @@ function crearRecordatorio(PDO $pdo, int $usuarioId): void
     $expiracion = time() + 60 * 60 * 24 * 14;
 
     $consulta = $pdo->prepare(
-        'INSERT INTO auth-tokens (
+        'INSERT INTO auth_tokens (
             usuario_id,
             selector,
             validator_hash,
@@ -67,7 +67,7 @@ function crearRecordatorio(PDO $pdo, int $usuarioId): void
             :usuario_id,
             :selector,
             :validator_hash,
-            :expira-en
+            :expira_en
         )'
     );
 
