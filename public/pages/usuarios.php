@@ -234,13 +234,14 @@ try {
                         <th scope="col">Correo</th>
                         <th scope="col">Rol</th>
                         <th scope="col">Estado</th>
+                        <th scope="col">Acciones</th>
                     </tr>
                 </thead>
 
                 <tbody class="sg-table-body">
                     <?php if ($usuarios === []): ?>
                         <tr>
-                            <td class="sg-table-empty" colspan="4">
+                            <td class="sg-table-empty" colspan="5">
                                 No se encontraron usuarios.
                             </td>
                         </tr>
@@ -263,6 +264,17 @@ try {
                                     <?= (int) $usuarioListado['activo'] === 1
                                         ? 'Activo'
                                         : 'Inactivo' ?>
+                                </td>
+                                <td class="sg-user-actions">
+                                    <a
+                                        class="sg-link sg-link-user-edit"
+                                        href="<?= escapar(
+                                            '/pages/usuario-formulario.php?'
+                                            . http_build_query(['id' => $usuarioListado['id']])
+                                        ) ?>"
+                                    >
+                                        Editar
+                                    </a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

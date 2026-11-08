@@ -9,6 +9,54 @@ try {
 
     exigirRol($usuario, ['administrador']);
 
+    $id = 0;
+
+    $datosUsuario = [
+        'nombre' => '',
+        'correo' => '',
+        'rol_id' => '',
+        'activo' => 1,
+    ];
+
+    if (isset($_GET['id'])) {
+        if (!is_string($_GET['id'])) {
+            http_response_code(400);
+
+            exit('El identificador no es valido.');
+        }
+
+        $id = filter_var(
+            $_GET['id'],
+            FILTER_VALIDATE_INT,
+            ['options' => ['min_range' => 1]]
+        );
+
+        if ($id === false) {
+            http_response_code(400);
+
+            exit('El identificador no es valido.');
+        }
+
+        $consultaUsuario = $pdo->prepare(
+            'SELECT nombre, correo, rol_id, activo
+             FROM usuarios
+             WHERE id = :id
+               AND eliminado_en IS NULL'
+        );
+
+        $consultaUsuario->execute([
+            ':id' => $id,
+        ]);
+
+        $datosUsuario = $consultaUsuario->fetch();
+
+        if ($datosUsuario === false) {
+            http_response_code(404);
+
+            exit('El usuario no existe.');
+        }
+    }
+
     $consulta = $pdo->query(
         "SELECT id, nombre
          FROM roles
@@ -21,6 +69,12 @@ try {
     $errorUsuario = $_SESSION['error_usuario'] ?? '';
 
     unset($_SESSION['error_usuario']);
+
+    $titulo = $id === 0 ? 'Crear usuario' : 'Editar usuario';
+
+    $accion = $id === 0
+        ? '/actions/usuario-crear.php'
+        : '/actions/usuario-actualizar.php';
 } catch (Throwable $error) {
     error_log((string) $error);
 
@@ -35,7 +89,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Crear usuario | SIGEL</title>
+    <title><?= escapar($titulo) ?> | SIGEL</title>
 
     <link rel="stylesheet" href="/assets/styles.css">
 </head>
@@ -49,7 +103,7 @@ try {
     </header>
 
     <main class="sg-panel-main">
-        <h2 class="sg-section-title">Crear usuario</h2>
+        <h2 class="sg-section-title"><?= escapar($titulo) ?></h2>
 
         <?php if ($errorUsuario !== ''): ?>
             <p class="sg-form-error" role="alert">
@@ -59,14 +113,18 @@ try {
 
         <form
             class="sg-user-form"
-            action="/actions/usuario-crear.php"
+            action="<?= escapar($accion) ?>"
             method="post"
         >
             <input
                 type="hidden"
                 name="csrf_token"
-                value="<?= escapar(obtenerTokenCsrf()) ?>"
-            >
+                value="<?= escapar(obtenerTokenCsrf()) ?>">
+
+            <input
+                type="hidden"
+                name="id"
+                value="<?= escapar((string) $id) ?>">
 
             <div class="sg-field sg-field-user-name">
                 <label
@@ -83,6 +141,7 @@ try {
                     name="nombre"
                     maxlength="100"
                     autocomplete="name"
+                    value="<?= escapar($datosUsuario['nombre']) ?>"
                     required
                 >
             </div>
@@ -102,6 +161,7 @@ try {
                     name="correo"
                     maxlength="150"
                     autocomplete="off"
+                    value="<?= escapar($datosUsuario['correo']) ?>"
                     required
                 >
             </div>
@@ -122,11 +182,16 @@ try {
                     minlength="8"
                     maxlength="72"
                     autocomplete="new-password"
-                    required
+                    <?= $id === 0 ? 'required' : '' ?>
                 >
 
                 <p class="sg-field-description">
-                    Entre 8 y 72 bytes.
+                    <?php if ($id === 0): ?>
+                        Entre 8 y 72 bytes.
+                    <?php else: ?>
+                        Dejar vacía para conservar la contraseña actual.
+                        Una nueva contraseña debe tener entre 8 y 72 bytes.
+                    <?php endif; ?>
                 </p>
             </div>
 
@@ -147,19 +212,60 @@ try {
                     <option value="">Seleccionar rol</option>
 
                     <?php foreach ($roles as $rol): ?>
-                        <option value="<?= escapar((string) $rol['id']) ?>">
+                        <option
+                            value="<?= escapar((string) $rol['id']) ?>"
+                            <?= (string) $rol['id'] === (string) $datosUsuario['rol_id']
+                                ? 'selected'
+                                : '' ?>
+                        >
                             <?= escapar($rol['nombre']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
             </div>
 
+            <?php if ($id > 0): ?>
+                <div class="sg-field sg-field-user-status">
+                    <label
+                        class="sg-label sg-label-user-status"
+                        for="sg-user-status"
+                    >
+                        Estado
+                    </label>
+
+                    <select
+                        class="sg-input sg-select-user-status"
+                        id="sg-user-status"
+                        name="activo"
+                        required
+                    >
+                        <option
+                            value="1"
+                            <?= (int) $datosUsuario['activo'] === 1
+                                ? 'selected'
+                                : '' ?>
+                        >
+                            Activo
+                        </option>
+
+                        <option
+                            value="0"
+                            <?= (int) $datosUsuario['activo'] === 0
+                                ? 'selected'
+                                : '' ?>
+                        >
+                            Inactivo
+                        </option>
+                    </select>
+                </div>
+            <?php endif; ?>
+
             <div class="sg-form-actions">
                 <button
                     class="sg-button sg-button-user-save"
                     type="submit"
                 >
-                    Crear usuario
+                    <?= $id === 0 ? 'Crear usuario' : 'Guardar cambios' ?>Crear usuario
                 </button>
 
                 <a
