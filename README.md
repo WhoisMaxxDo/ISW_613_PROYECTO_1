@@ -38,6 +38,20 @@ La rotación no extiende ese plazo.
 Una sesión autenticada que alcanza 30 minutos de inactividad
 se cierra y revoca su recordatorio cuando se detecta el vencimiento.
 
+## Implementado
+
+- CRUD de categorías exclusivo del administrador.
+- Búsqueda por nombre y listado paginado.
+- Eliminación lógica mediante eliminado_en.
+- Preferencia de paginación de categorías mediante cookie validada.
+
+La paginación admite 5, 10, 20 o 50 registros.
+Ante una cookie ausente o inválida se utilizan 10 registros.
+
+Las categorías admiten entre 1 y 3650 días máximos de préstamo.
+Los nombres permanecen reservados aunque la categoría se elimine
+lógicamente.
+
 ## Regla individual
 
 Quien registra un préstamo no puede aprobarlo.
