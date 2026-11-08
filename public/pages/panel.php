@@ -18,12 +18,12 @@ try {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel | SIGEL</title>
-    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body class="sg-page-panel">
     <header class="sg-header">
@@ -41,6 +41,14 @@ try {
         <p class="sg-panel-role">
             Rol: <?= escapar($usuario['rol']) ?>
         </p>
+
+        <form class="sg-logout-form" action="/actions/logout.php" method="post">
+            <input type="hidden" name="csrf_token" value="<?= escapar(obtenerTokenCsrf()) ?>">
+
+            <button class="sg-button sg-button-logout" type="submit">
+                Cerrar sesión
+            </button>
+        </form>
     </main>
 </body>
 </html>

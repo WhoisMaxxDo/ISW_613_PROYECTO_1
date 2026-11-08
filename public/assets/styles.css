@@ -177,3 +177,15 @@ body {
   color: #991b1b;
   line-height: 1.5;
 }
+
+.sg-logout-form {
+  margin-top: 24px;
+}
+
+.sg-button-logout {
+  background-color: #991b1b;
+}
+
+.sg-button-logout:hover:not(:disabled) {
+  background-color: #7f1d1d;
+}
