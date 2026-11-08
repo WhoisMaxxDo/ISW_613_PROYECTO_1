@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../../includes/bootstrap.php';
 
-if ($_SERVER['RQUEST_METHOD'] !== 'POST') {
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Allow: POST');
 
     http_response_code(405);
@@ -10,12 +10,10 @@ if ($_SERVER['RQUEST_METHOD'] !== 'POST') {
     exit('Metodo no permitido.');
 }
 
-
 if (!validarTokenCsrf($_POST['csrf_token'] ?? null)) {
     http_response_code(403);
 
     exit('La solicitud no es valida.');
-
 }
 
 cerrarSesion();
