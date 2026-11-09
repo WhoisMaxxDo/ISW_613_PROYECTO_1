@@ -406,4 +406,61 @@ function cambiarEstadoPrestamo(
         );
 
         foreach ($ids as $equipoId) {
+            $consultaEntregados->execute([
+                ':equipo_id' => $equipoId,
+                ':prestamo_id' => $prestamoId,
+            ]);
+
+            if ($consultaEntregados->fetch() !== false) {
+                throw new DomainException(
+                    'Un equipo sigue entregado en otro prestamo.'
+                );
+            }
+        }
+    }
+
+    $aprobadoPor = $nuevoEstado === 'aprobado'
+        ? $actorId
+        : $prestamo['aprobado_por'];
+
+    $actualizar = $pdo->prepare(
+        'UPDATE prestamos
+         SET estado = :estado,
+             aprobado_por = :aprobado_por
+         WHERE id = :id'
+    );
+
+    $actualizar->execute([
+        ':estado' => $nuevoEstado,
+        ':aprobado_por' => $aprobadoPor,
+        ':id' => $prestamoId,
+    ]);
+
+    if ($nuevoEstado === 'devuelto') {
+        $devolver = $pdo->prepare(
+            'UPDATE prestamo_detalle
+             SET fecha_devolucion = NOW()
+             WHERE prestamo_id = :id
+               AND fecha_devolucion IS NULL'
+        );
+
+        $devolver->execute([
+            ':id' => $prestamoId,
+        ]);
+    }
+
+    registrarEventoPrestamo(
+        $pdo,
+        $actorId,
+        $prestamoId,
+        'cambiar_estado',
+        ['estado' => $prestamo['estado']],
+        [
+            'estado' => $nuevoEstado,
+            'aprobado_por' => $aprobadoPor,
+        ]
+    );
+
+    $pdo->commit();
+}
            

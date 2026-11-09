@@ -42,27 +42,25 @@ try {
             Rol: <?= escapar($usuario['rol']) ?>
         </p>
 
-        <?php if ($usuario['rol'] === 'administrador'): ?>
-            <nav class="sg-panel-navigation" aria-label="Administración">
-                <a
-                    class="sg-link sg-link-categories"
-                    href="/pages/categorias.php"
-                >
+        <nav class="sg-panel-navigation" aria-label="Navegación principal">
+            <?php if ($usuario['rol'] === 'administrador'): ?>
+                <a class="sg-link sg-link-categories" href="/pages/categorias.php">
                     Gestionar categorías
                 </a>
-                <a
-                    class="sg-link sg-link-users"
-                    href="/pages/usuarios.php"
-                >
+
+                <a class="sg-link sg-link-users" href="/pages/usuarios.php">
                     Gestionar usuarios
                 </a>
-                <nav class="sg-panel-navigation" aria-label="Inventario">
-                    <a class="sg-link sg-link-equipment" href="/pages/equipos.php">
-                        Consultar equipos
-                    </a>
-                </nav>
-            </nav>
-        <?php endif; ?>
+            <?php endif; ?>
+
+            <a class="sg-link sg-link-equipment" href="/pages/equipos.php">
+                Consultar equipos
+            </a>
+
+            <a class="sg-link sg-link-loans" href="/pages/prestamos.php">
+                Gestionar préstamos
+            </a>
+        </nav>
 
         <form class="sg-logout-form" action="/actions/logout.php" method="post">
             <input type="hidden" name="csrf_token" value="<?= escapar(obtenerTokenCsrf()) ?>">

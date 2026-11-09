@@ -111,6 +111,24 @@ La cookie sigel_equipos_recientes conserva hasta cinco identificadores
 sin duplicados durante 30 días. Su contenido se valida y los equipos
 se consultan nuevamente en la base de datos.
 
+## Préstamos
+
+Administradores y operadores pueden registrar y gestionar préstamos
+con uno o varios equipos.
+
+Estados:
+solicitado, aprobado, entregado, devuelto y cancelado.
+
+Los intervalos de préstamos activos no pueden traslaparse para
+un mismo equipo. Las operaciones utilizan transacciones y bloqueos
+de InnoDB.
+
+Quien registra el préstamo no puede aprobarlo, aunque sea administrador.
+La devolución registra todos los equipos del préstamo.
+
+La creación y los cambios de estado se registran en bitácora.
+Las fechas se interpretan en America/Costa_Rica.
+
 ## Regla individual
 
 Quien registra un préstamo no puede aprobarlo.
