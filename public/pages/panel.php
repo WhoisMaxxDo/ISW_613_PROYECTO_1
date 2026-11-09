@@ -60,6 +60,9 @@ try {
             <a class="sg-link sg-link-loans" href="/pages/prestamos.php">
                 Gestionar préstamos
             </a>
+            <a class="sg-link sg-link-reports" href="/pages/reportes.php">
+                Consultar reportes
+            </a>
         </nav>
 
         <form class="sg-logout-form" action="/actions/logout.php" method="post">

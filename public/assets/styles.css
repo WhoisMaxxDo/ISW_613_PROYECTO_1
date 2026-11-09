@@ -607,3 +607,26 @@ body {
     padding: 18px;
   }
 }
+
+.sg-report-filter {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.sg-report-filter .sg-field {
+  flex: 1 1 180px;
+  max-width: 260px;
+  margin-bottom: 0;
+}
+
+.sg-report-description {
+  color: #475569;
+  line-height: 1.6;
+}
+
+.sg-report-export {
+  margin: 20px 0;
+}
