@@ -93,6 +93,24 @@ No se permite eliminar equipos asociados a préstamos activos.
 La carga de imágenes y los equipos consultados recientemente
 todavía están pendientes.
 
+## Imágenes y equipos recientes
+
+Cada equipo admite varias imágenes, agregadas individualmente
+por el administrador. Administradores y operadores pueden consultarlas.
+
+Se permiten JPEG, PNG y WebP, con un máximo de 2 MiB por archivo.
+Se valida la extensión, el MIME real con finfo y el tamaño real.
+El servidor genera el nombre del archivo.
+
+Las imágenes se guardan en storage/images, fuera del directorio
+público, y se entregan mediante imagen.php después de validar el acceso.
+
+storage/images debe permitir escritura al usuario de Apache.
+
+La cookie sigel_equipos_recientes conserva hasta cinco identificadores
+sin duplicados durante 30 días. Su contenido se valida y los equipos
+se consultan nuevamente en la base de datos.
+
 ## Regla individual
 
 Quien registra un préstamo no puede aprobarlo.

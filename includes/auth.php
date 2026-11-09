@@ -14,11 +14,16 @@ function exigirAutenticacion(PDO $pdo): array
     $ultimaActividad = $_SESSION['ultima_actividad'] ?? 0;
 
     if (time() - $ultimaActividad >= 1800) {
-        revocarRecordatorio($pdo);
-        cerrarSesion();
+        $_SESSION = [];
 
-        header('Location: /pages/login.php');
-        exit;
+        if (!session_regenerate_id(true)) {
+            throw new RuntimeException('No se pudo renovar la sesion.');
+        }
+
+        if (!recuperarSesionRecordada($pdo)) {
+            header('Location: /pages/login.php');
+            exit;
+        }
     }
 
     $consulta = $pdo->prepare(

@@ -423,3 +423,51 @@ body {
 .sg-button-equipment-delete:hover:not(:disabled) {
   background-color: #7f1d1d;
 }
+
+.sg-equipment-information {
+  display: grid;
+  grid-template-columns: minmax(100px, 160px) minmax(0, 1fr);
+  gap: 12px 20px;
+  margin: 24px 0;
+}
+
+.sg-equipment-information dt {
+  font-weight: bold;
+}
+
+.sg-equipment-information dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.sg-image-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.sg-equipment-image {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background-color: #ffffff;
+}
+
+.sg-image-upload-form {
+  max-width: 560px;
+  margin-top: 28px;
+}
+
+.sg-recent-equipment {
+  margin-bottom: 24px;
+}
+
+.sg-recent-equipment-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  padding-left: 20px;
+}

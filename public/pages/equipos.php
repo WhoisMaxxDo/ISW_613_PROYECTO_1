@@ -8,6 +8,7 @@ try {
     $usuario = exigirAutenticacion($pdo);
 
     exigirRol($usuario, ['administrador', 'operador']);
+    $equiposRecientes = consultarEquiposRecientes($pdo);
 
     $esAdministrador = $usuario['rol'] === 'administrador';
 
@@ -227,6 +228,35 @@ try {
             <button class="sg-button" type="submit">Aplicar</button>
         </form>
 
+        <?php if ($equiposRecientes !== []): ?>
+            <section
+                class="sg-recent-equipment"
+                aria-labelledby="sg-recent-equipment-title"
+            >
+                <h3 id="sg-recent-equipment-title">
+                    Consultados recientemente
+                </h3>
+
+                <ul class="sg-recent-equipment-list">
+                    <?php foreach ($equiposRecientes as $reciente): ?>
+                        <li>
+                            <a
+                                class="sg-link"
+                                href="<?= escapar(
+                                    '/pages/equipo-detalle.php?'
+                                    . http_build_query(['id' => $reciente['id']])
+                                ) ?>"
+                            >
+                                <?= escapar(
+                                    $reciente['codigo'] . ' — ' . $reciente['nombre']
+                                ) ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </section>
+        <?php endif; ?>
+
         <p class="sg-results-count">
             Registros encontrados: <?= escapar((string) $totalRegistros) ?>
         </p>
@@ -263,7 +293,17 @@ try {
                     <?php foreach ($equipos as $equipo): ?>
                         <tr>
                             <td><?= escapar($equipo['codigo']) ?></td>
-                            <td><?= escapar($equipo['nombre']) ?></td>
+                            <td>
+                                <a
+                                    class="sg-link"
+                                    href="<?= escapar(
+                                        '/pages/equipo-detalle.php?'
+                                        . http_build_query(['id' => $equipo['id']])
+                                    ) ?>"
+                                >
+                                    <?= escapar($equipo['nombre']) ?>
+                                </a>
+                            </td>
                             <td><?= escapar($equipo['categoria']) ?></td>
                             <td><?= escapar($equipo['estado']) ?></td>
 
