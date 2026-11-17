@@ -51,6 +51,9 @@ try {
                 <a class="sg-link sg-link-users" href="/pages/usuarios.php">
                     Gestionar usuarios
                 </a>
+                <a class="sg-link sg-link-reports" href="/pages/reportes.php">
+                    Consultar reportes
+                </a>
             <?php endif; ?>
 
             <a class="sg-link sg-link-equipment" href="/pages/equipos.php">
@@ -59,9 +62,6 @@ try {
 
             <a class="sg-link sg-link-loans" href="/pages/prestamos.php">
                 Gestionar préstamos
-            </a>
-            <a class="sg-link sg-link-reports" href="/pages/reportes.php">
-                Consultar reportes
             </a>
         </nav>
 

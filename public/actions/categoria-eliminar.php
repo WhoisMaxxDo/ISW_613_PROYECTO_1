@@ -65,7 +65,7 @@ try {
     header('Location: /pages/categorias.php', true, 303);
     exit;
 } catch (throwable $error) {
-    errro_log((string) $error);
+    error_log((string) $error);
 
     http_response_code(503);
 

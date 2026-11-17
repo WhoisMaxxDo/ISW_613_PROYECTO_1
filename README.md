@@ -26,8 +26,6 @@ Autor: Donald Miranda
 Proyecto en desarrollo. Se definieron la estructura inicial,
 el esquema relacional y los datos de prueba.
 
-La autenticación, los CRUD y la gestión de préstamos están pendientes.
-
 - Sesión persistente mediante selector y validador.
 - Validación y rotación del token al recuperar una sesión.
 - Revocación del token al cerrar sesión.
@@ -129,6 +127,20 @@ La devolución registra todos los equipos del préstamo.
 La creación y los cambios de estado se registran en bitácora.
 Las fechas se interpretan en America/Costa_Rica.
 
+## Reportes y CSV
+
+El reporte de equipos más prestados es exclusivo del administrador.
+
+Cuenta préstamos en estado entregado o devuelto, según su fecha
+de inicio. La fecha final seleccionada se incluye completa.
+Los préstamos solicitados, aprobados y cancelados no se contabilizan.
+
+Los equipos eliminados lógicamente conservan su participación
+histórica en el reporte.
+
+La exportación utiliza fputcsv() y neutraliza prefijos de fórmulas
+en las celdas exportadas.
+
 ## Regla individual
 
 Quien registra un préstamo no puede aprobarlo.
@@ -163,6 +175,13 @@ debe quedar ubicada en:
 Si se instala en otra ubicación, ajustar las rutas del virtual hosst
 
 ### 3. Configurar Apache
+
+En /Applications/XAMPP/xamppfiles/etc/httpd.conf, comprobar que
+la siguiente inclusión esté habilitada y no duplicada:
+
+```apache
+Include etc/extra/httpd-vhosts.conf
+```
 
 En /Applications/XAMPP/xamppfiles/etc/extra/httpd-vhosts.conf,
 conservar las configuraciones existentes y agregar, sin duplicarlos,
@@ -246,13 +265,13 @@ Comprobar las tablas:
 
 ### 5. Usuarios de prueba
 
-Estas cuentas se utilizarán cuando esté implementada la autenticación:
+Cuentas iniciales disponibles después de importar seed.sql:
 
-| Rol           | Correo                   | Contraseña de prueba |
-| ------------- | ------------------------ | -------------------- |
-| Administrador | admin@sigel.utn.ac.cr    | PruebaSIGEL2026!     |
-| Operador      | operador@sigel.utn.ac.cr | PruebaSIGEL2026!     |
-| Operador      | operador@sigel.utn.ac.cr | PruebaSIGEL2026!     |
+| Rol           | Correo                    | Contraseña de prueba |
+| ------------- | ------------------------- | -------------------- |
+| Administrador | admin@sigel.utn.ac.cr     | PruebaSIGEL2026!     |
+| Operador 1    | operador@sigel.utn.ac.cr  | PruebaSIGEL2026!     |
+| Operador 2    | operador2@sigel.utn.ac.cr | PruebaSIGEL2026!     |
 
 Las contraseñas se almacenan como hashes generados con password_hash().
 Estas credenciales son exclusivamente para pruebas locales.
@@ -307,22 +326,51 @@ log_errors = On
 
 Reiniciar Apache después de modificar php.ini.
 
-### 8. Comprobar la instalación inicial
+### Permisos de almacenamiento
 
-Con Apache y MySQL o MariaDB iniciados abrir:
+En esta instalación de XAMPP para macOS, Apache ejecuta las peticiones
+con el usuario/grupo daemon.
 
-```text
-http://sigel.local/
+Desde la raíz del proyecto:
+
+```bash
+sudo chgrp daemon storage/images storage/logs
+sudo chmod 2770 storage/images storage/logs
 ```
 
-En esta etapa del proyecto debe aparecer el mensaje:
+Los permisos se limitan a las carpetas de imágenes y registros.
+Si se utiliza otro servidor o usuario de ejecución, deben adaptarse.
+
+Para cargar imágenes, file_uploads debe estar habilitado.
+upload_max_filesize debe permitir al menos 2 MiB y post_max_size
+debe permitir el archivo más los campos del formulario.
+
+La aplicación limita cada imagen a 2 MiB, independientemente de que
+PHP permita cargas mayores. Reiniciar Apache si se modifica php.ini.
+
+### 8. Acceder y comprobar la instalación
+
+Iniciar Apache y MySQL/MariaDB desde XAMPP.
+
+Abrir el acceso de la aplicación:
 
 ```text
-Entorno inicial disponible.
+http://sigel.local/pages/login.php
 ```
 
-Comprobar también que no puedan abrirse los archivos privados mediante
-sigel.local ni mediante localhost.
+Comprobar:
 
-La página inicial únicamente verifica la conexión.
-La autenticación y los módulos de gestión todavía están pendientes.
+- Acceso con administrador y operador.
+- Restricciones de rol mediante URL directa.
+- CRUD, búsqueda, paginación y eliminación lógica.
+- Persistencia y validación de las cookies de preferencias.
+- Carga y consulta protegida de imágenes.
+- Rechazo de préstamos traslapados.
+- Rechazo de autoaprobacion.
+- Flujo de aprobación, entrega, devolución y cancelación.
+- Reporte y descarga CSV con el mismo rango.
+- Cierre de sesión y recuperación mediante Recordarme.
+- Bloqueo del acceso directo a las carpetas privadas.
+
+Las pruebas de concurrencia deben comprobar que dos solicitudes
+simultáneas incompatibles no puedan confirmarse ambaas.
